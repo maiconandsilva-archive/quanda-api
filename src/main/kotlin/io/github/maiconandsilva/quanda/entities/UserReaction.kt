@@ -2,8 +2,10 @@ package io.github.maiconandsilva.quanda.entities
 
 import javax.persistence.Entity
 import javax.persistence.ManyToOne
+import javax.persistence.Table
 
 @Entity
+@Table(schema = "users")
 data class UserReaction(
     @ManyToOne(optional = false)
     val user: User,
@@ -13,4 +15,4 @@ data class UserReaction(
 
     @ManyToOne(optional = false)
     val type: ReactionType,
-) : BaseEntity()
+) : BaseEntity<Long?>()

@@ -1,14 +1,8 @@
 package io.github.maiconandsilva.quanda.entities
 
+import org.springframework.data.jpa.domain.AbstractPersistable
 import java.io.Serializable
-import java.util.*
-import javax.persistence.GeneratedValue
-import javax.persistence.GenerationType
-import javax.persistence.Id
 import javax.persistence.MappedSuperclass
 
 @MappedSuperclass
-abstract class BaseEntity(
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
-    open var id: UUID? = null
-) : Serializable
+abstract class BaseEntity<ID : Serializable?> : AbstractPersistable<ID>()

@@ -1,25 +1,22 @@
 package io.github.maiconandsilva.quanda.entities
 
-import javax.persistence.Column
-import javax.persistence.Entity
-import javax.persistence.ManyToMany
-import javax.validation.constraints.Max
-import javax.validation.constraints.NotEmpty
+import io.github.maiconandsilva.quanda.consts.Patterns
+import javax.persistence.*
 import javax.validation.constraints.Pattern
 import javax.validation.constraints.Size
 
 @Entity
+@Table(schema = "posts")
 data class Tag(
-    @Max(16)
-    @NotEmpty
+    @Size(min = 1, max = 24)
     @Pattern(regexp = Patterns.NO_ESPECIAL_CHARS)
-    @Column(length = 16, nullable = false)
+    @Column(length = 24, nullable = false)
     val name: String,
 
     @Size(min = 30, max = 100)
-    @Column(length = 100)
+    @Column(length = 100, nullable = false)
     val description: String,
 
     @ManyToMany(mappedBy = "tags")
     val questions: MutableSet<Question> = mutableSetOf(),
-) : BaseEntity()
+) : BaseEntity<Long?>()

@@ -1,11 +1,11 @@
 package io.github.maiconandsilva.quanda.entities
 
-import javax.persistence.Embedded
-import javax.persistence.Entity
-import javax.persistence.ManyToOne
+import javax.persistence.*
 import javax.validation.constraints.Size
 
 @Entity
+@Table(schema = "posts")
+@DiscriminatorValue("C")
 data class Comment(
     @Size(min = 7, max = 400)
     override val text: String,
@@ -15,4 +15,4 @@ data class Comment(
 
     @ManyToOne(optional = false)
     override val author: User,
-) : Post(text, author)
+) : PostContent(text, author)
