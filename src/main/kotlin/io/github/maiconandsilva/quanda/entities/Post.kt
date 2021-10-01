@@ -15,14 +15,15 @@ open class Post : BaseEntity<UUID?>()
 abstract class PostContent(
     @Size(min = 100, max = 1000)
     @Column(columnDefinition = "text", nullable = false)
-    open val text: String,
+    open var text: String,
 
     @ManyToOne(optional = false)
-    open val author: User,
+    open var author: User,
 
     @Embedded
     private val auditable: Auditable = Auditable(),
 
     @Embedded
     private val softDeletable: SoftDeletable = SoftDeletable(),
+
 ) : Post(), IAuditable by auditable, ISoftDeletable by softDeletable

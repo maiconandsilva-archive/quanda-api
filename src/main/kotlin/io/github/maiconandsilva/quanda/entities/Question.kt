@@ -12,18 +12,19 @@ data class Question(
     @Column(length = 200, nullable = false)
     var title: String,
 
-    override val text: String,
+    override var text: String,
 
     @ManyToOne
-    override val author: User,
+    override var author: User,
 
     @Size(min = 1)
     @JoinTable(schema = "posts")
     @ManyToMany(cascade = [CascadeType.ALL])
-    val tags: MutableSet<Tag> = mutableSetOf(),
+    var tags: MutableSet<Tag> = mutableSetOf(),
 
     @Min(0)
     private var views: Int = 0,
+
 ) : PostContent(text, author) {
 
     fun increaseViews() {

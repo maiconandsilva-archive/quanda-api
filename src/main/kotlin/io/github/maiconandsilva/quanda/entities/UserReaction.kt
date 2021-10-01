@@ -8,11 +8,12 @@ import javax.persistence.Table
 @Table(schema = "users")
 data class UserReaction(
     @ManyToOne(optional = false)
-    val user: User,
+    var user: User,
 
     @ManyToOne(optional = false)
-    val post: Post,
+    var post: Post,
 
     @ManyToOne(optional = false)
-    val type: ReactionType,
+    var type: ReactionType,
+
 ) : BaseEntity<Long?>()

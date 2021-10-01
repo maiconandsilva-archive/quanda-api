@@ -9,11 +9,12 @@ import javax.persistence.Table
 @Table(schema = "posts")
 @DiscriminatorValue("A")
 data class Answer(
-    override val text: String,
+    override var text: String,
 
     @ManyToOne
-    override val author: User,
+    override var author: User,
 
     @ManyToOne(optional = false)
-    val question: Question,
+    var question: Question,
+
 ) : PostContent(text, author)

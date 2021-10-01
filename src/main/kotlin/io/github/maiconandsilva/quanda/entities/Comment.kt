@@ -8,11 +8,12 @@ import javax.validation.constraints.Size
 @DiscriminatorValue("C")
 data class Comment(
     @Size(min = 7, max = 400)
-    override val text: String,
+    override var text: String,
 
     @ManyToOne(optional = false)
-    val post: Post,
+    var post: Post,
 
     @ManyToOne(optional = false)
-    override val author: User,
+    override var author: User,
+
 ) : PostContent(text, author)

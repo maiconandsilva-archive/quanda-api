@@ -8,8 +8,9 @@ import javax.persistence.Table
 @Table(schema = "users")
 data class ReactionType(
     @Column(nullable = false)
-    val name: String,
+    var name: String,
 
     @Column(nullable = false)
-    val reputation: Int,
+    var reputation: Int,
+
 ) : BaseEntity<Long?>()

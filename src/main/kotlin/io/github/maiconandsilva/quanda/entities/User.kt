@@ -16,7 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder
 data class User(
     @Email
     @Column(unique = true, nullable = false)
-    val email: String,
+    var email: String,
 
     @Size(min = 8, max = 64)
     @Pattern(
@@ -30,21 +30,21 @@ data class User(
         regexp = Patterns.NO_ESPECIAL_CHARS,
         message = "username should have only letters, numbers, underscores and dashes")
     @Column(length = 64)
-    val username: String? = null,
+    var username: String? = null,
 
     @Size(min = 2, max = 500)
     @Column(length = 500)
-    val name: String? = null,
+    var name: String? = null,
 
     @Max(2000)
-    @Column(length = 2000)
+    @Column(columnDefinition = "text")
     var about: String? = null,
 
     @Min(1)
     var reputation: Int = 1,
 
     @OneToMany(mappedBy = "user", cascade = [CascadeType.DETACH])
-    val reactions: MutableSet<UserReaction> = mutableSetOf(),
+    var reactions: MutableSet<UserReaction> = mutableSetOf(),
 
     @Embedded
     private val auditable: Auditable = Auditable(),
@@ -52,13 +52,14 @@ data class User(
     @Embedded
     private val softDeletable: SoftDeletable = SoftDeletable(),
 
-) : BaseEntity<UUID?>(), IAuditable by auditable, ISoftDeletable by softDeletable {
+) : BaseEntity<UUID>(), IAuditable by auditable, ISoftDeletable by softDeletable {
 
     @Autowired
+    @Transient
     private lateinit var passwordEncoder: PasswordEncoder
 
-    @Column(length = 100, nullable = false)
-    lateinit var hashedPassword: String,
+    @Column(name = "password", length = 100, nullable = false)
+    private lateinit var hashedPassword: String
 
     @PrePersist
     private fun saveHashedPassword() {

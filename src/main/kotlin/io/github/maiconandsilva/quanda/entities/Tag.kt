@@ -11,12 +11,13 @@ data class Tag(
     @Size(min = 1, max = 24)
     @Pattern(regexp = Patterns.NO_ESPECIAL_CHARS)
     @Column(length = 24, nullable = false)
-    val name: String,
+    var name: String,
 
     @Size(min = 30, max = 100)
     @Column(length = 100, nullable = false)
-    val description: String,
+    var description: String,
 
     @ManyToMany(mappedBy = "tags")
-    val questions: MutableSet<Question> = mutableSetOf(),
+    var questions: MutableSet<Question> = mutableSetOf(),
+
 ) : BaseEntity<Long?>()
