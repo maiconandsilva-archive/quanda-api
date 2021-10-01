@@ -16,4 +16,4 @@ data class Comment(
     @ManyToOne(optional = false)
     override var author: User,
 
-) : PostContent(text, author)
+) : Post(text, author)

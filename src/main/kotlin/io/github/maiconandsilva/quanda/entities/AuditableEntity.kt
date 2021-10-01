@@ -1,27 +1,28 @@
-package io.github.maiconandsilva.quanda.entities.embedables
+package io.github.maiconandsilva.quanda.entities
 
+import java.io.Serializable
 import java.util.Date
 import javax.persistence.*
 
 
-@Embeddable
-class Auditable: IAuditable {
+@MappedSuperclass
+abstract class AuditableEntity<ID : Serializable?> : SoftDeletableEntity<ID>() {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false)
-    override lateinit var createdDate: Date
+    lateinit var createdDate: Date
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false)
-    override lateinit var lastModifiedDate: Date
+    lateinit var lastModifiedDate: Date
 
     @PrePersist
-    fun persistCreatedDate() {
+    private fun persistCreatedDate() {
         createdDate = Date()
         lastModifiedDate = Date()
     }
 
     @PostUpdate
-    fun updateLastModifiedDate() {
+    private fun updateLastModifiedDate() {
         lastModifiedDate = Date()
     }
 }

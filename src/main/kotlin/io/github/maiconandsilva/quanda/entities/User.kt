@@ -1,10 +1,6 @@
 package io.github.maiconandsilva.quanda.entities
 
 import io.github.maiconandsilva.quanda.consts.Patterns
-import io.github.maiconandsilva.quanda.entities.embedables.IAuditable
-import io.github.maiconandsilva.quanda.entities.embedables.Auditable
-import io.github.maiconandsilva.quanda.entities.embedables.SoftDeletable
-import io.github.maiconandsilva.quanda.entities.embedables.ISoftDeletable
 import java.util.UUID
 import javax.persistence.*
 import javax.validation.constraints.*
@@ -29,7 +25,7 @@ data class User(
     @Pattern(
         regexp = Patterns.NO_ESPECIAL_CHARS,
         message = "username should have only letters, numbers, underscores and dashes")
-    @Column(length = 64)
+    @Column(unique = true, length = 64)
     var username: String? = null,
 
     @Size(min = 2, max = 500)
@@ -46,25 +42,7 @@ data class User(
     @OneToMany(mappedBy = "user", cascade = [CascadeType.DETACH])
     var reactions: MutableSet<UserReaction> = mutableSetOf(),
 
-    @Embedded
-    private val auditable: Auditable = Auditable(),
-
-    @Embedded
-    private val softDeletable: SoftDeletable = SoftDeletable(),
-
-) : BaseEntity<UUID>(), IAuditable by auditable, ISoftDeletable by softDeletable {
-
-    @Autowired
-    @Transient
-    private lateinit var passwordEncoder: PasswordEncoder
-
+) : AuditableEntity<UUID>() {
     @Column(name = "password", length = 100, nullable = false)
-    private lateinit var hashedPassword: String
-
-    @PrePersist
-    private fun saveHashedPassword() {
-        if (password != null) {
-            hashedPassword = passwordEncoder.encode(password)
-        }
-    }
+    lateinit var hashedPassword: String
 }

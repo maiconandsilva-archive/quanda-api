@@ -17,4 +17,4 @@ data class Answer(
     @ManyToOne(optional = false)
     var question: Question,
 
-) : PostContent(text, author)
+) : Post(text, author)

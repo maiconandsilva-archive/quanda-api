@@ -25,7 +25,7 @@ data class Question(
     @Min(0)
     private var views: Int = 0,
 
-) : PostContent(text, author) {
+) : Post(text, author) {
 
     fun increaseViews() {
         views++
