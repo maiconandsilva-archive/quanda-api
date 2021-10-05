@@ -1,11 +1,9 @@
 package io.github.maiconandsilva.quanda.entities
 
 import io.github.maiconandsilva.quanda.consts.Patterns
-import java.util.UUID
+import java.util.*
 import javax.persistence.*
 import javax.validation.constraints.*
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.security.crypto.password.PasswordEncoder
 
 @Entity
 @Table(schema = "users", name = "qa_user")
@@ -18,8 +16,8 @@ data class User(
     @Pattern(
         regexp = Patterns.PASSWORD,
         message = "{quanda.user.validation.password}")
-    @Transient
-    var password: String? = null,
+    @Column(length = 60, nullable = false)
+    var password: String,
 
     @Size(min = 3, max = 64)
     @Pattern(
@@ -42,7 +40,8 @@ data class User(
     @OneToMany(mappedBy = "user", cascade = [CascadeType.DETACH])
     var reactions: MutableSet<UserReaction> = mutableSetOf(),
 
-) : AuditableEntity<UUID>() {
-    @Column(name = "password", length = 100, nullable = false)
-    lateinit var hashedPassword: String
-}
+    @ManyToMany
+    @JoinTable(schema = "users")
+    val roles: MutableSet<Role> = mutableSetOf(),
+
+) : AuditableEntity<UUID>()
