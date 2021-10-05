@@ -14,8 +14,6 @@ services:
     restart: unless-stopped
     working_dir: /app
     command: ./gradlew bootRun
-    environment:
-      - PORT:
     depends_on:
       - db
     volumes:
