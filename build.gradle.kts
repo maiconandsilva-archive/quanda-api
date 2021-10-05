@@ -4,6 +4,8 @@ import org.springframework.boot.gradle.tasks.run.BootRun
 plugins {
 	id("org.springframework.boot") version "2.5.4"
 	id("io.spring.dependency-management") version "1.0.11.RELEASE"
+    id("com.github.johnrengelman.processes") version "0.5.0"
+    id("org.springdoc.openapi-gradle-plugin") version "1.3.1"
 	war
 	kotlin("jvm") version "1.5.21"
 	kotlin("plugin.spring") version "1.5.21"
@@ -27,6 +29,10 @@ dependencies {
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+    implementation("io.jsonwebtoken:jjwt:0.9.1")
+    implementation("org.springdoc:springdoc-openapi-ui:1.5.10")
+    implementation("org.springdoc:springdoc-openapi-kotlin:1.5.10")
+    implementation("org.springdoc:springdoc-openapi-security:1.5.10")
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 	runtimeOnly("org.postgresql:postgresql")
 	providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
@@ -38,7 +44,8 @@ tasks.withType<KotlinCompile> {
 	kotlinOptions {
 		freeCompilerArgs = listOf(
             "-Xjsr305=strict",
-            "-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005",
+            "-Xdebug",
+            "-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005"
         )
 		jvmTarget = "1.8"
 	}
