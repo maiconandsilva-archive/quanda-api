@@ -9,11 +9,11 @@ import javax.persistence.*
 abstract class AuditableEntity<ID : Serializable?> : SoftDeletableEntity<ID>() {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false)
-    lateinit var createdDate: Date
+    open lateinit var createdDate: Date
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false)
-    lateinit var lastModifiedDate: Date
+    open lateinit var lastModifiedDate: Date
 
     @PrePersist
     private fun persistCreatedDate() {
