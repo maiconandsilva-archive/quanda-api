@@ -8,7 +8,7 @@ import javax.validation.constraints.Size
 @Table(schema = "posts")
 @DiscriminatorValue("Q")
 data class Question(
-    @Size(min = 10, max = 200)
+    @field:Size(min = 10, max = 200)
     @Column(length = 200, nullable = false)
     var title: String,
 
@@ -17,12 +17,12 @@ data class Question(
     @ManyToOne
     override var author: User,
 
-    @Size(min = 1)
+    @field:Size(min = 1)
     @JoinTable(schema = "posts")
     @ManyToMany(cascade = [CascadeType.ALL])
     var tags: MutableSet<Tag> = mutableSetOf(),
 
-    @Min(0)
+    @field:Min(0)
     private var views: Int = 0,
 
 ) : Post(text, author) {

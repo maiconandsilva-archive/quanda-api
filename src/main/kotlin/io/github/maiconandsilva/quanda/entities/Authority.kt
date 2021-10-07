@@ -6,4 +6,7 @@ import javax.persistence.Table
 
 @Entity
 @Table(schema = "users")
-data class Role(@Column(unique = true, length = 25) val name: String) : BaseEntity<Long>()
+data class Authority(
+    @Column(unique = true, length = 25)
+    val name: String
+) : BaseEntity<Long>()

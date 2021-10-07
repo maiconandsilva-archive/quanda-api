@@ -8,7 +8,7 @@ import javax.validation.constraints.Size
 @Table(schema = "posts")
 @Inheritance(strategy = InheritanceType.JOINED)
 open class Post(
-    @Size(min = 100, max = 1000)
+    @field:Size(min = 100, max = 1000)
     @Column(columnDefinition = "text", nullable = false)
     open var text: String,
 

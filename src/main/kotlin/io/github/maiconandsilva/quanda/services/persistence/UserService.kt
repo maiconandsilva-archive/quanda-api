@@ -8,18 +8,17 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import java.util.*
-import javax.validation.Valid
 
 @Service
 class UserService(
-    private val roleService: RoleService,
+    private val authorityService: AuthorityService,
     private val passwordEncoder: PasswordEncoder,
     override val repository: UserRepository,
 ) : PersistenceService<UUID, User, UserRepository>, UserDetailsService {
 
-    override fun create(@Valid entity: User): User {
+    override fun create(entity: User): User {
         entity.password = passwordEncoder.encode(entity.password)
-        entity.roles += roleService.repository.findByName("USER")
+        entity.authorities += authorityService.repository.findByName("ROLE_USER")
         return super.create(entity)
     }
 

@@ -7,7 +7,7 @@ import javax.validation.constraints.Size
 @Table(schema = "posts")
 @DiscriminatorValue("C")
 data class Comment(
-    @Size(min = 7, max = 400)
+    @field:Size(min = 7, max = 400)
     override var text: String,
 
     @ManyToOne(optional = false)

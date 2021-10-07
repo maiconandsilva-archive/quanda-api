@@ -1,1 +1,1 @@
-INSERT INTO users.role values (0, 'ADMIN'), (1, 'USER');
+INSERT INTO users.authority values (0, 'ROLE_ADMIN'), (1, 'ROLE_USER');
