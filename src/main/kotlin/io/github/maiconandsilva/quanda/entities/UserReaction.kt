@@ -9,6 +9,7 @@ import javax.persistence.Table
 @Entity
 @Table(schema = "users")
 data class UserReaction(
+    @JsonView(Views.UserReaction::class)
     @ManyToOne(optional = false)
     var user: User,
 
@@ -18,4 +19,7 @@ data class UserReaction(
     @ManyToOne(optional = false)
     var type: ReactionType,
 
-) : BaseEntity<Long?>()
+    @ManyToOne(optional = false)
+    var author: User,
+
+) : BaseEntity<Long>()

@@ -11,18 +11,18 @@ import javax.validation.constraints.Size
 @Table(schema = "posts")
 data class Tag(
     @JsonView(Views.Public::class)
-    @field:Size(min = 1, max = 24)
+    @field:Size(min = 1, max = 100)
     @field:Pattern(regexp = Patterns.NO_ESPECIAL_CHARS)
-    @Column(length = 24, nullable = false)
+    @Column(length = 24, unique = true, nullable = false)
     var name: String,
 
     @JsonView(Views.Public::class)
-    @field:Size(min = 30, max = 100)
+    @field:Size(min = 10, max = 1000)
     @Column(length = 100, nullable = false)
     var description: String,
 
-    @JsonView(Views.Private::class)
+    @JsonView(Views.Tag::class)
     @ManyToMany(mappedBy = "tags")
     var questions: MutableSet<Question> = mutableSetOf(),
 
-) : BaseEntity<Long?>()
+) : BaseEntity<Long>()

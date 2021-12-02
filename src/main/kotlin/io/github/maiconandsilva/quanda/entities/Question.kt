@@ -25,6 +25,9 @@ data class Question(
     @field:Min(0)
     private var views: Int = 0,
 
+    @OneToOne
+    var acceptedAnswer: Answer? = null,
+
 ) : Post(text, author) {
 
     fun increaseViews() {

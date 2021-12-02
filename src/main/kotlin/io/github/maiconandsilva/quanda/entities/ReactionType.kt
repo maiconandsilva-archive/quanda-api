@@ -11,6 +11,6 @@ data class ReactionType(
     var name: String,
 
     @Column(nullable = false)
-    var reputation: Int,
+    var points: Int,
 
-) : BaseEntity<Long?>()
+) : BaseEntity<Long>()
