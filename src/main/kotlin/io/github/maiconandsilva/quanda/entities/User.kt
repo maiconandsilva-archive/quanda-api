@@ -41,11 +41,11 @@ data class User(
 
     @JsonView(Views.Owner::class)
     @OneToMany(mappedBy = "user")
-    var reactions: MutableSet<UserReaction> = mutableSetOf(),
+    var reputationLog: MutableSet<UserReputation> = mutableSetOf(),
 
     @JsonView(Views.Admin::class)
     @ManyToMany(cascade = [CascadeType.ALL])
     @JoinTable(schema = Schema.USER)
     var authorities: MutableSet<Authority> = mutableSetOf(),
 
-) : AuditableEntity<UUID>()
+    ) : AuditableEntity<UUID>()

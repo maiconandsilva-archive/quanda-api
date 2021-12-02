@@ -7,7 +7,7 @@ import javax.persistence.Table
 
 @Entity
 @Table(schema = Schema.USER)
-data class ReactionType(
+data class Reputation(
     @Column(nullable = false)
     var name: String,
 

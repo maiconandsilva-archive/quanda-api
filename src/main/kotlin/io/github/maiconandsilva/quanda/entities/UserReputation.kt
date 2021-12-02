@@ -9,7 +9,7 @@ import javax.persistence.Table
 
 @Entity
 @Table(schema = Schema.USER)
-data class UserReaction(
+data class UserReputation(
     @JsonView(Views.UserReaction::class)
     @ManyToOne(optional = false)
     var user: User,
@@ -18,9 +18,9 @@ data class UserReaction(
     var post: Post,
 
     @ManyToOne(optional = false)
-    var type: ReactionType,
+    var reputation: Reputation,
 
     @ManyToOne(optional = false)
     var author: User,
 
-) : BaseEntity<Long>()
+    ) : BaseEntity<Long>()
