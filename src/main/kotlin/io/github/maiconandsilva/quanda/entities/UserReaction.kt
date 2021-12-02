@@ -1,13 +1,14 @@
 package io.github.maiconandsilva.quanda.entities
 
 import com.fasterxml.jackson.annotation.JsonView
+import io.github.maiconandsilva.quanda.consts.Schema
 import io.github.maiconandsilva.quanda.utils.sec.Views
 import javax.persistence.Entity
 import javax.persistence.ManyToOne
 import javax.persistence.Table
 
 @Entity
-@Table(schema = "users")
+@Table(schema = Schema.USER)
 data class UserReaction(
     @JsonView(Views.UserReaction::class)
     @ManyToOne(optional = false)

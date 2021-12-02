@@ -1,13 +1,12 @@
 package io.github.maiconandsilva.quanda.entities
 
-import javax.persistence.DiscriminatorValue
+import io.github.maiconandsilva.quanda.consts.Schema
 import javax.persistence.Entity
 import javax.persistence.ManyToOne
 import javax.persistence.Table
 
 @Entity
-@Table(schema = "posts")
-@DiscriminatorValue("A")
+@Table(schema = Schema.POST)
 data class Answer(
     override var text: String,
 

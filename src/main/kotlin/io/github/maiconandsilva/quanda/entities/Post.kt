@@ -3,6 +3,7 @@ package io.github.maiconandsilva.quanda.entities
 import com.fasterxml.jackson.annotation.JsonSubTypes
 import com.fasterxml.jackson.annotation.JsonTypeInfo
 import com.fasterxml.jackson.annotation.JsonView
+import io.github.maiconandsilva.quanda.consts.Schema
 import io.github.maiconandsilva.quanda.utils.sec.Views
 import javax.persistence.*
 import javax.validation.constraints.Size
@@ -18,7 +19,7 @@ import javax.validation.constraints.Size
     JsonSubTypes.Type(Question::class, name = "question"),
 )
 @Entity
-@Table(schema = "posts")
+@Table(schema = Schema.POST)
 @Inheritance(strategy = InheritanceType.JOINED)
 open class Post(
     @field:Size(min = 100, max = 2000)

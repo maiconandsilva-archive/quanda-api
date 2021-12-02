@@ -2,13 +2,14 @@ package io.github.maiconandsilva.quanda.entities
 
 import com.fasterxml.jackson.annotation.JsonView
 import io.github.maiconandsilva.quanda.consts.Patterns
+import io.github.maiconandsilva.quanda.consts.Schema
 import io.github.maiconandsilva.quanda.utils.sec.Views
 import javax.persistence.*
 import javax.validation.constraints.Pattern
 import javax.validation.constraints.Size
 
 @Entity
-@Table(schema = "posts")
+@Table(schema = Schema.POST)
 data class Tag(
     @JsonView(Views.Public::class)
     @field:Size(min = 1, max = 100)

@@ -1,11 +1,12 @@
 package io.github.maiconandsilva.quanda.entities
 
+import io.github.maiconandsilva.quanda.consts.Schema
 import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.Table
 
 @Entity
-@Table(schema = "users")
+@Table(schema = Schema.USER)
 data class ReactionType(
     @Column(nullable = false)
     var name: String,

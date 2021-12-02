@@ -4,10 +4,11 @@ import javax.persistence.*
 import java.util.UUID
 import javax.validation.constraints.Size
 import com.fasterxml.jackson.annotation.JsonView
+import io.github.maiconandsilva.quanda.consts.Schema
 import io.github.maiconandsilva.quanda.utils.sec.Views
 
 @Entity
-@Table(schema = "posts")
+@Table(schema = Schema.POST)
 data class Comment(
     @JsonView(Views.Public::class)
     @field:Size(min = 7, max = 400)

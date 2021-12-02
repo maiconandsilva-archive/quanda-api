@@ -1,12 +1,12 @@
 package io.github.maiconandsilva.quanda.entities
 
+import io.github.maiconandsilva.quanda.consts.Schema
 import javax.persistence.*
 import javax.validation.constraints.Min
 import javax.validation.constraints.Size
 
 @Entity
-@Table(schema = "posts")
-@DiscriminatorValue("Q")
+@Table(schema = Schema.POST)
 data class Question(
     @field:Size(min = 10, max = 200)
     @Column(length = 200, nullable = false)
@@ -18,7 +18,7 @@ data class Question(
     override var author: User,
 
     @field:Size(min = 1)
-    @JoinTable(schema = "posts")
+    @JoinTable(schema = Schema.POST)
     @ManyToMany(cascade = [CascadeType.ALL])
     var tags: MutableSet<Tag> = mutableSetOf(),
 

@@ -2,6 +2,7 @@ package io.github.maiconandsilva.quanda.entities
 
 import com.fasterxml.jackson.annotation.JsonView
 import io.github.maiconandsilva.quanda.consts.Patterns
+import io.github.maiconandsilva.quanda.consts.Schema
 import io.github.maiconandsilva.quanda.utils.sec.Views
 import io.github.maiconandsilva.quanda.utils.validation.Groups
 import java.util.*
@@ -9,7 +10,7 @@ import javax.persistence.*
 import javax.validation.constraints.*
 
 @Entity
-@Table(schema = "users", name = "qa_user")
+@Table(schema = Schema.USER, name = "qa_user")
 data class User(
     @JsonView(Views.Owner::class)
     @field:Email
@@ -44,7 +45,7 @@ data class User(
 
     @JsonView(Views.Admin::class)
     @ManyToMany(cascade = [CascadeType.ALL])
-    @JoinTable(schema = "users")
+    @JoinTable(schema = Schema.USER)
     var authorities: MutableSet<Authority> = mutableSetOf(),
 
 ) : AuditableEntity<UUID>()
