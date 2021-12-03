@@ -15,7 +15,7 @@ data class User(
     @JsonView(Views.Owner::class)
     @field:Email
     @field:NotBlank
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false, unique = true)
     var email: String,
 
     @Size(min = 8, max = 64, groups = [Groups.OnUpdate::class])
@@ -26,18 +26,18 @@ data class User(
     @JsonView(Views.Public::class)
     @field:Size(min = 3, max = 64)
     @field:Pattern(regexp = Patterns.NO_ESPECIAL_CHARS)
-    @Column(unique = true, length = 64)
-    var username: String? = null,
+    @Column(length = 64, nullable = false, unique = true)
+    var username: String,
 
     @JsonView(Views.Public::class)
     @field:Size(min = 2, max = 500)
-    @Column(length = 500)
-    var name: String? = null,
+    @Column(length = 500, nullable = false)
+    var name: String,
 
     @JsonView(Views.Public::class)
     @field:Size(max = 2000)
     @Column(columnDefinition = "text")
-    var about: String? = null,
+    var about: String = String(),
 
     @JsonView(Views.Owner::class)
     @OneToMany(mappedBy = "user")

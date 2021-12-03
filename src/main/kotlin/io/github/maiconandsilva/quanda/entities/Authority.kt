@@ -9,7 +9,7 @@ import javax.persistence.Table
 @Entity
 @Table(schema = Schema.USER)
 data class Authority(
-    @Column(unique = true, length = 100)
+    @Column(length = 100, nullable = false, unique = true)
     private val name: String
 ) : BaseEntity<Long>(), GrantedAuthority {
     override fun getAuthority(): String = name
