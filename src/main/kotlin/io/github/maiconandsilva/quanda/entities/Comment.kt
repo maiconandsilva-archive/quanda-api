@@ -22,4 +22,4 @@ data class Comment(
     @ManyToOne(optional = false)
     var post: Post,
 
-) : AuditableEntity<UUID>()
+) : AuditableEntity<Long>()
