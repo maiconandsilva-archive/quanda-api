@@ -22,15 +22,11 @@ data class Question(
     @ManyToMany(cascade = [CascadeType.ALL])
     var tags: MutableSet<Tag> = mutableSetOf(),
 
-    @field:Min(0)
-    private var views: Int = 0,
-
     @OneToOne
     var acceptedAnswer: Answer? = null,
 
 ) : Post(text, author) {
-
-    fun increaseViews() {
-        views++
-    }
+    @field:Min(0)
+    var views: Int = 0
+        private set
 }

@@ -8,10 +8,11 @@ import javax.persistence.Table
 @Entity
 @Table(schema = Schema.USER)
 data class Reputation(
-    @Column(nullable = false)
-    var name: String,
+    override var name: String,
+
+    override var description: String,
 
     @Column(nullable = false)
     var points: Int,
 
-) : BaseEntity<Long>()
+) : Event(name, description)
