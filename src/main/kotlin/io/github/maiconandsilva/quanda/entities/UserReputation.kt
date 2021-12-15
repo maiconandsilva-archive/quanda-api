@@ -1,26 +1,14 @@
 package io.github.maiconandsilva.quanda.entities
 
-import com.fasterxml.jackson.annotation.JsonView
 import io.github.maiconandsilva.quanda.consts.Schema
-import io.github.maiconandsilva.quanda.utils.sec.Views
-import javax.persistence.Entity
-import javax.persistence.ManyToOne
-import javax.persistence.Table
+import org.hibernate.annotations.Immutable
+import java.util.*
+import javax.persistence.*
 
 @Entity
-@Table(schema = Schema.USER)
-data class UserReputation(
-    @JsonView(Views.UserReaction::class)
-    @ManyToOne(optional = false)
-    var user: User,
-
-    @ManyToOne(optional = false)
-    var post: Post,
-
-    @ManyToOne(optional = false)
-    var reputation: Reputation,
-
-    @ManyToOne(optional = false)
-    var author: User,
-
-    ) : BaseEntity<Long>()
+@Immutable
+@AttributeOverride(name = "id", column = Column(name = "user_id"))
+@Table(schema = Schema.USER, name = "user_reputation")
+class UserReputation : BaseEntity<UUID>() {
+    var reputation: Int = 0
+}

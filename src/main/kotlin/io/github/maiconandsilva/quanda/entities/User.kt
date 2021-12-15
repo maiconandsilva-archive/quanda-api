@@ -39,13 +39,20 @@ data class User(
     @Column(columnDefinition = "text")
     var about: String = String(),
 
-    @JsonView(Views.Owner::class)
-    @OneToMany(mappedBy = "user")
-    var reputationLog: MutableSet<UserReputation> = mutableSetOf(),
-
     @JsonView(Views.Admin::class)
     @ManyToMany(cascade = [CascadeType.ALL])
     @JoinTable(schema = Schema.USER)
     var authorities: MutableSet<Authority> = mutableSetOf(),
 
-    ) : AuditableEntity<UUID>()
+    @OneToOne
+    @JoinColumn(
+        name = "id", referencedColumnName = "user_id",
+        updatable = false, insertable = false
+    )
+    var reputation: UserReputation,
+
+    @JsonView(Views.Owner::class)
+    @OneToMany(mappedBy = "subject")
+    var events: MutableSet<EventLogging> = mutableSetOf(),
+
+) : AuditableEntity<UUID>()
