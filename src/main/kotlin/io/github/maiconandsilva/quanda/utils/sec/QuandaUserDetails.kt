@@ -3,27 +3,14 @@ package io.github.maiconandsilva.quanda.utils.sec
 import io.github.maiconandsilva.quanda.entities.User
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
-import org.springframework.security.core.userdetails.User as SpringSecurityUser
-import java.util.*
 
-class SecurityUserDetails(
-    val appUser: User,
-    username: String,
-    password: String,
-    enabled: Boolean = true,
-    accountNonExpired: Boolean = true,
-    credentialsNonExpired: Boolean = true,
-    accountNonLocked: Boolean = true,
-    authorities: MutableCollection<out GrantedAuthority?> = mutableListOf(),
-) : UserDetails {
-    override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
-        TODO("Not yet implemented")
-    }
-    
-    override fun getPassword(): String = appUser.password
-    override fun getUsername(): String? = appUser.username
-    override fun isAccountNonExpired(): Boolean = isEnabled
-    override fun isAccountNonLocked(): Boolean = isEnabled
-    override fun isCredentialsNonExpired(): Boolean = isEnabled
-    override fun isEnabled(): Boolean = appUser.deletedDate == null
+class QuandaUserDetails(val loggedInUser: User) : UserDetails {
+    override fun getAuthorities(): MutableCollection<out GrantedAuthority> = loggedInUser.authorities
+    override fun getPassword(): String = loggedInUser.password
+    override fun getUsername(): String?
+        = if (loggedInUser.username.isEmpty()) loggedInUser.email else loggedInUser.username
+    override fun isAccountNonExpired(): Boolean = true
+    override fun isAccountNonLocked(): Boolean = true
+    override fun isCredentialsNonExpired(): Boolean = true
+    override fun isEnabled(): Boolean = loggedInUser.deletedDate == null
 }

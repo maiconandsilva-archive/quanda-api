@@ -1,14 +1,33 @@
-erver:
-  port: 8080
-  servlet:
-    context-path: /
+api:
+  registration:
+    uri: /user/create
+  auth:
+    jwt:
+      secret: somerandomsecret
+      issuer: io.github.maiconandsilva.quanda
+      token-validity: '3600000'
+    unauthenticated-paths: |
+      ${api.auth.uri}, ${api.registration.uri}, ${springdoc.api-docs.path}*/**, /swagger-ui*/**
+    uri: /user/authenticate
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  api-docs:
+    path: /api-docs
 
 spring:
   datasource:
+    password: quanda
     driver-class-name: org.postgresql.Driver
     username: quanda
-    password: quanda
+    initialization-mode: always
     url: jdbc:postgresql://localhost:5556/quanda
   jpa:
     hibernate:
       ddl-auto: create-drop
+
+server:
+  servlet:
+    context-path: /api/v1/
+  port: '8080'

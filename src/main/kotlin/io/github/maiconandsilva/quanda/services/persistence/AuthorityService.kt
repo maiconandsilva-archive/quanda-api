@@ -7,4 +7,6 @@ import org.springframework.stereotype.Service
 @Service
 class AuthorityService(
     override val repository: AuthorityRepository,
-) : PersistenceService<Long, Authority, AuthorityRepository>
+) : PersistenceService<Long, Authority, AuthorityRepository> {
+    fun findByName(name: String): Authority = repository.findByName(name)
+}

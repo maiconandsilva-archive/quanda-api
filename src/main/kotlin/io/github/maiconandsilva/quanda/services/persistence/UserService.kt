@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import java.util.*
+import kotlin.jvm.Throws
 
 @Service
 class UserService(
@@ -18,15 +19,25 @@ class UserService(
 
     override fun create(entity: User): User {
         entity.password = passwordEncoder.encode(entity.password)
-        entity.authorities += authorityService.repository.findByName("ROLE_USER")
         return super.create(entity)
     }
 
-    override fun loadUserByUsername(subject: String): QuandaUserDetails {
-        // Email will be used as unique identifier to load user
-        val user = repository.findByEmailOrUsername(subject, subject)
+    override fun update(id: UUID, userUpdate: User) {
+        val user = repository.getById(id)
+//        user.merge(userUpdate)
+        save(user)
+    }
+
+    @Throws(UsernameNotFoundException::class)
+    override fun loadUserByUsername(username: String): QuandaUserDetails {
+        // Either email or username will be used as unique identifier to load user
+        val user = findByEmailOrUsername(username)
             ?: throw UsernameNotFoundException(
-                "Couldn't found user with email or username: $subject")
+                "Couldn't found user with email or username: $username")
         return QuandaUserDetails(user)
+    }
+
+    fun findByEmailOrUsername(identifier: String): User? {
+        return repository.findByEmailOrUsername(identifier, identifier)
     }
 }

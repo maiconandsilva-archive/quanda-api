@@ -1,11 +1,12 @@
 package io.github.maiconandsilva.quanda.utils.sec
 
 
-import io.jsonwebtoken.Claims
-import io.jsonwebtoken.Jwts
-import io.jsonwebtoken.SignatureAlgorithm
+import io.github.maiconandsilva.quanda.entities.Authority
+import io.github.maiconandsilva.quanda.entities.User
+import io.jsonwebtoken.*
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.security.authentication.AuthenticationManager
+import org.springframework.security.authentication.BadCredentialsException
 import org.springframework.security.authentication.CredentialsExpiredException
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
@@ -13,6 +14,7 @@ import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.stereotype.Component
 import java.util.*
+import kotlin.collections.ArrayList
 
 @Component
 class TokenManager(
@@ -28,27 +30,25 @@ class TokenManager(
     private var tokenValidity: Long = 0,
 ) {
     private fun getClaimsFrom(token: String) : Claims {
-        return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).body
-    }
-
-    fun validateToken(token: String, userDetails: QuandaUserDetails) {
-        val claims = getClaimsFrom(token)
-        val isTokenExpired = claims.expiration.before(Date())
-        if (claims.subject != userDetails.email || isTokenExpired) {
-            throw CredentialsExpiredException("User token expired")
+        try {
+            return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).body
+        } catch (e: ExpiredJwtException) {
+            throw CredentialsExpiredException("Token expired")
+        } catch (e: SignatureException) {
+            throw BadCredentialsException("Ill formatted token")
         }
     }
 
     fun generateSignedToken(auth: Authentication): String {
         val claims: MutableMap<String, Any> = mutableMapOf(
-            "authorities" to auth.authorities,
+            "authorities" to auth.authorities.map { it.authority },
         )
 
         val principal = auth.principal as UserDetails
 
         return Jwts.builder()
             .setClaims(claims)
-            .setSubject(principal.username as String)
+            .setSubject(principal.username)
             .setIssuer(issuer)
             .setIssuedAt(Date())
             .setExpiration(Date(System.currentTimeMillis() + tokenValidity))
@@ -58,16 +58,17 @@ class TokenManager(
 
     fun parseToken(token: String) : Authentication {
         val claims = getClaimsFrom(token)
-        @Suppress("UNCHECKED_CAST")
-        val authorities = claims["authorities"] as MutableCollection<out GrantedAuthority>
-        return createAuthenticationToken(claims.subject, String(), authorities)
+        val authorities = claims.get("authorities", ArrayList<String>().javaClass)
+        return createAuthenticationToken(claims.subject, null, authorities.map { Authority(it) })
     }
 
-    fun createAuthenticationToken(email: String, password: String,
-                authorities: MutableCollection<out GrantedAuthority>? = null) : Authentication {
-        if (authorities === null) {
-            return authManager.authenticate(UsernamePasswordAuthenticationToken(email, password))
-        }
-        return UsernamePasswordAuthenticationToken(email, password, authorities)
+    fun createAuthenticationToken(email: String, password: String?,
+            authorities: Collection<GrantedAuthority>? = null) : Authentication {
+        return if (authorities === null) UsernamePasswordAuthenticationToken(email, password)
+                else UsernamePasswordAuthenticationToken(email, password, authorities)
+    }
+
+    fun authenticate(email: String, password: String) : Authentication {
+        return authManager.authenticate(createAuthenticationToken(email, password))
     }
 }

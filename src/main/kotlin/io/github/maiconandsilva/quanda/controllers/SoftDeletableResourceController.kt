@@ -22,13 +22,9 @@ interface SoftDeletableResourceController<
 > : ResourceController<ID, Entity, Repository, Service> {
 
     override fun delete(@PathVariable id: ID) {
-        val entity = service.repository.findById(id).orElse(null)
-        
-        if (entity === null) {
-            throw ResourceNotFoundException() //"No entity found for id: $id")
-        }
+        val entity = service.repository.getById(id)
 
         entity.softDelete()
-        service.repository.save(entity)
+        service.save(entity)
     }
 }

@@ -1,15 +1,10 @@
 tasks:
-  - before: cp samples/docker-compose.override.yml .
+  - before: |
+      cp samples/docker-compose.override.yml .
   - init: |
       docker-compose pull
   - command: |
       docker-compose up
-    env:
-      DB_DATABASE: quanda
-      #DB_HOST=localhost
-      DB_PORT: 5556
-      DB_USER: quanda
-      DB_PASS: quanda
 
 ports:
   - port: 8000
